@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    <link rel="stylesheet" href="/assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+     <script src="/js/component.js"></script>
+     <script src="/js/chart.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+    <header class="header">
+        <div style="display: flex; align-items: center; justify-content: space-evenly;">
+            <div class="logo">
+                <i class="fa fa-temperature-low"></i>
+            </div>
+            <div style="margin-right: 700px;">
+                <nav class="menu">
+                    <ul>
+                        <li><a href="#">Thời tiết</a></li>
+                        <li><a href="#">Theo dõi độ ẩm</a></li>
+                        <li><a href="#">Trạng thái máy bơm</a></li>
+                    </ul>
+                </nav>
+            </div>
+            
+            <div class="logout-button" style="margin-right: 20px;">
+                <button class="btn-logout" id="logoutButton" onclick="logout()">Đăng xuất</button>
+            </div>
+    
+        </div>
+    </header>
+    <section>
+        <div class="container ">
+            <h2 class="section-title">Thời tiết Hà Nội hôm nay</h2>
+            <div class="weather" id="weather"></div>  
+
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            
+            <div class="content" style="display: flex; align-items: start; justify-content: center;">
+                <div class="inner-content " style="margin-right: 30px;">
+                    <h2 class="section-title">Ngay lúc này</h2>
+                    <div style="display: flex;">
+                        <div id="humidity-card" class="card"></div>
+                        <div id="pump-card" class="card"></div>
+                    </div>
+                    
+                </div>
+                <div class="inner-content">
+                    <h2 class="section-title" >Bật/Tắt máy bơm</h2>
+                    <div style="display: flex;" >
+                        <div class="card">
+                            <br>
+                            <button class="btn" id="turnOnButton" onclick="turnOnPump()">Bật Máy Bơm</button>
+                            <br><br>
+                            <button class="btn" id="turnOffButton" onclick="turnOffPump()">Tắt Máy Bơm</button>
+                            <br><br>
+                        </div>
+                       
+                    </div>
+                   
+                </div>
+               
+            </div>
+            
+            
+        </div>
+    </section>
+    
+    <section>
+        <div class="container" >
+            <div style="display: flex; align-items: start; justify-content: center;">
+                <div class="inner-content" style="width: 35%; ">
+                    <h2 class="section-title" >Hẹn giờ bật máy bơm</h2>
+                        
+                    <form class="card" id="timerForm" style="margin-bottom: -1px;">
+                        <label for="time">Chọn giờ</label>
+                        <br><br>
+                        <input type="text" id="time" name="time" style="margin-bottom: 20px; width: 50%; border: 1px solid #2f527a;">
+                        <br><br>
+                        <button class="btn" type="submit" >Gửi</button>
+                        
+                    </form> 
+                </div>
+
+                <div class="inner-content" style="width: 35%; ">
+                    <h2 class="section-title">Thời gian đã cài đặt</h2>
+                    <div class="card" id="dataDisplay">Đang lấy dữ liệu...</div>
+                </div>
+                </div>
+                   
+        </div>
+        
+    </section>
+    <section style="background-color: #f9f9f9;">
+        <div class="container" >
+            <h2 class="section-title" >Theo dõi độ ẩm đất</h2>
+            <canvas id="humidityChart" width="400" height="200"></canvas>
+            <div class="humidity" id="humidity"></div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <h2 class="section-title">Theo dõi trạng thái máy bơm</h2>
+            <div class="pump-status" id="pump-status"></div>
+        </div>
+    </section>
+    
+    <script>
+    
+      document.getElementById('timerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const time = document.getElementById('time').value;
+            if (time) {
+                // Dữ liệu cần gửi (bao gồm id và time)
+                const data = {  
+                    time: time
+                };
+  
+                // Gửi dữ liệu giờ đến API qua phương thức POST
+                fetch('http://192.168.1.114:3000/time/create', {
+                    method: 'POST',
+                    headers: {
+                        Accept: "application/json",
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)  // Chuyển đổi dữ liệu thành chuỗi JSON
+                })
+                .then(response => response.json())  // Chuyển đổi phản hồi thành JSON
+                .then(result => alert('Thời gian đã được gửi thành công!'))
+                .catch(error => console.error('Error:', error));
+            } else {
+                alert('Vui lòng chọn giờ.');
+            }
+        });
+    </script>
+
+<script>
+    async function turnOnPump() {
+        const data = {
+            status: 1
+        };
+            try {
+                const response = await fetch('http://192.168.1.114:3000/status/edit/1', {
+                    method: 'PATCH',
+                    headers: {
+                        Accept: "application/json",
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response) {
+                    alert('Đã bật máy bơm!')
+                } else {
+                    document.getElementById('message').innerText = "Lỗi khi gửi yêu cầu bật máy bơm tới ThingSpeak.";
+                }
+            } catch (error) {
+                console.error("Lỗi kết nối:", error);
+                document.getElementById('message').innerText = "Lỗi kết nối. Vui lòng thử lại.";
+            }
+        }
+
+    async function turnOffPump() {
+        const data = {
+            status: 0
+        };
+        try {
+            const response = await fetch('http://192.168.1.114:3000/status/edit/1', {
+                method: 'PATCH',
+                headers: {
+                    Accept: "application/json",
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response) {
+                alert('Đã tắt máy bơm!')
+            } else {
+                document.getElementById('message').innerText = "Lỗi khi gửi yêu cầu tắt máy bơm tới ThingSpeak.";
+            }
+        } catch (error) {
+            console.error("Lỗi kết nối:", error);
+            document.getElementById('message').innerText = "Lỗi kết nối. Vui lòng thử lại.";
+        }
+    }
+    </script>
+
+
+</body>
+</html>

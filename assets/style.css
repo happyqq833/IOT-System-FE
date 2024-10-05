@@ -1,0 +1,215 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+   
+}
+
+.container {
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.weather, .now{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather-card , .card {
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    /* background-color: #f9f9f9; */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.weather-card h3,.card h3 {
+    margin: 10px 0;
+}
+
+.weather-card p, .card p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.weather-card i, .card i {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #3d6a9f;
+}
+/* Basic styles */
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #2f527a;
+    padding: 15px 30px;
+    color: white;
+}
+
+/* Logo section */
+.header .logo {
+    display: flex;
+    align-items: center;
+}
+
+.header .logo i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.header .logo span {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Menu section */
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.menu ul li {
+    margin-left: 20px; /* Add spacing between menu items */
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+}
+
+.menu ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .menu ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .menu ul li {
+        margin: 10px 0;
+    }
+}
+.section-title{
+    text-align: center;
+    color: #2f527a;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+/* Style for weather cards */
+.weather-card {
+    
+    border-radius: 10px;
+    padding: 20px ;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.weather-card h3 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.weather-card p {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+
+
+/* Style for pump status table */
+table {
+    width: 60%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+th, td {
+    /* border: 1px solid #ddd; */
+    padding: 10px;
+    text-align: center;
+}
+
+
+th {
+    background-color: transparent;
+    font-weight: bold;
+    color: #2f527a;
+    border-bottom: 1px solid #2f527a;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.btn{
+    padding: 6px 24px; 
+    color: #2f527a;
+    background-color: white; 
+    border: 2px solid #2f527a; 
+    font-size: 16px; 
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.btn:hover{
+    padding: 6px 24px; 
+    color: white;
+    background-color: #2f527a; 
+    border: 2px solid #2f527a; 
+    font-size: 16px; 
+    font-weight: 700;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.delete-button{
+    padding: 4px 10px; 
+    color: white;
+    background-color: #2f527a; 
+    border: none; 
+    font-size: 12px; 
+    font-weight: 500;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    
+}
+.btn-logout{
+    color: white;
+    background-color: transparent;
+    font-size: 18px;
+    /* font-weight: 600; */
+    border: none;
+}

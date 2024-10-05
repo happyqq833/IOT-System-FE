@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+    <div class="login-container container" style="text-align: center;">
+        <h2 class="section-title">Đăng nhập</h2>
+        <form id="loginForm" class="card" style="width: 40%; text-align: center; margin-left: auto; margin-right: auto; ">
+            <input type="text" id="username" name="username" placeholder="email" style="padding: 6px; border: 1px solid #2f527a;"><br><br>
+            <input type="password" id="password" name="password" placeholder="password" style="padding: 6px; border: 1px solid #2f527a;"><br><br>
+            <button class="btn" type="submit">Đăng nhập</button><br><br>
+        </form>
+        <p>Bạn chưa có tài khoản? <button class="delete-button" id="registerButton" style="margin-top: 10px;">Đăng ký</button></p>
+        
+        <div id="loginMessage"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username && password) {
+                // Dữ liệu cần gửi (bao gồm id và time)
+                const data = {  
+                    email: username,
+                    password: password
+                };
+  
+                const response = fetch('http://192.168.1.114:3000/login/${username}')
+                    
+                .then(response => {
+                    response.json();
+                    console.log(response);
+                    if (response) {
+                        // Nếu đăng nhập thành công, lưu trạng thái đăng nhập vào localStorage
+                        localStorage.setItem('loggedIn', 'true');
+                        window.location.href = '/index.html'; // Chuyển hướng về trang chính
+                    } else {
+                        document.getElementById('loginMessage').innerText = 'Đăng nhập thất bại. Kiểm tra lại tên người dùng hoặc mật khẩu.';
+                    }
+
+                } )
+                
+            } else {
+                alert('Looix');
+            }
+        });
+
+          
+        document.getElementById('registerButton').addEventListener('click', function() {
+            window.location.href = '/register.html';
+        });
+    </script>
+</body>
+</html>
